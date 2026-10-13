@@ -1,0 +1,31 @@
+/* แถบแจ้งเวอร์ชันทดลอง + หน้าต่างหมดระยะทดลอง (DEMO) */
+.demo-banner {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
+  padding: 8px 16px;
+  background: linear-gradient(90deg, #FEF3C7, #FDE68A);
+  color: #78350F;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: center;
+  border-bottom: 1px solid #F59E0B55;
+}
+.demo-banner-main { font-weight: 600; }
+.demo-banner.is-expired { background: linear-gradient(90deg, #FEE2E2, #FECACA); color: #7F1D1D; }
+.demo-expired .dialog-card { text-align: center; }
+.demo-expired-icon { font-size: 52px; line-height: 1; margin-bottom: 10px; }
+.demo-expired h3 { color: var(--amber); }
+.demo-expired-body { font-size: 14.5px; color: var(--ink-2); margin: 0 0 14px; }
+.demo-price {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #EEF2FF;
+  color: var(--primary-dark);
+  font-weight: 600;
+  font-size: 14.5px;
+}
+.demo-contact { margin: 12px 0 0; font-size: 14px; color: var(--ink-2); overflow-wrap: anywhere; }

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2A4BF0">
+  <title>Resize_Powerpoint (ทดลองใช้ฟรี)</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B63FB'/%3E%3Cstop offset='1' stop-color='%237C4DFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Segoe UI,Arial' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="fonts/fonts.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/trial.css?v=1">
+</head>
+<body data-step="1">
+  <!-- Icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+      <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.94 14.06 8 20l-1.94-5.94L0 12l6.06-1.94L8 4l1.94 6.06L16 12Z" transform="translate(2 0) scale(.85)"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M19 17v3"/><path d="M20.5 18.5h-3"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+      <symbol id="i-laptop" viewBox="0 0 24 24"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></symbol>
+      <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+      <symbol id="i-file-down" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></symbol>
+      <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+      <symbol id="i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 9 5.15"/></symbol>
+      <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="M22 17 13.5 8.5l-5 5L2 7"/><path d="M16 17h6v-6"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+      <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path class="dl-arrow" d="M7 10l5 5 5-5M12 15V3"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+      <symbol id="i-images" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- Animated background -->
+  <div class="aurora" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
+  </div>
+
+  <header class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span>
+      <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
+      <span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
+      <span class="particle p7"></span><span class="particle p8"></span>
+    </div>
+
+    <div class="hero-inner">
+      <div class="brand reveal" style="--d:0s">
+        <div class="logo" aria-hidden="true">
+          <span class="logo-ring"></span>
+          <span class="logo-core">
+            <span class="logo-letter">P</span>
+            <span class="logo-shine"></span>
+          </span>
+        </div>
+        <div class="brand-text">
+          <span class="eyebrow"><svg class="ico spin-slow"><use href="#i-sparkles"/></svg> PPTX File Resizer</span>
+          <h1>Resize <span class="grad-text">PowerPoint</span></h1>
+          <p>ย่อไฟล์นำเสนอให้เล็กลงอย่างชาญฉลาด เลือกระดับความชัด เห็นขนาดไฟล์จริงก่อนดาวน์โหลด</p>
+        </div>
+      </div>
+
+      <ul class="chips">
+        <li class="reveal" style="--d:.12s"><svg class="ico beat"><use href="#i-shield"/></svg>ประมวลผลในเครื่อง 100%</li>
+        <li class="reveal" style="--d:.22s"><svg class="ico float"><use href="#i-layers"/></svg>เปรียบเทียบ 5 ระดับ</li>
+        <li class="reveal" style="--d:.32s"><svg class="ico flash"><use href="#i-zap"/></svg>ไม่ต้องอัปโหลดขึ้นเซิร์ฟเวอร์</li>
+      </ul>
+
+      <ol class="stepper reveal" style="--d:.4s" aria-label="ขั้นตอน">
+        <li class="stp" data-for="1"><span class="stp-dot"><b>1</b><svg class="ico"><use href="#i-check"/></svg></span><span class="stp-label">นำเข้าไฟล์</span></li>
+        <li class="stp-line" data-for="2"><i></i></li>
+        <li class="stp" data-for="2"><span class="stp-dot"><b>2</b><svg class="ico"><use href="#i-check"/></svg></span><span class="stp-label">ความชัด</span></li>
+        <li class="stp-line" data-for="3"><i></i></li>
+        <li class="stp" data-for="3"><span class="stp-dot"><b>3</b><svg class="ico"><use href="#i-check"/></svg></span><span class="stp-label">รับไฟล์</span></li>
+      </ol>
+    </div>
+
+    <svg class="hero-wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave w1" d="M0 40 C 240 90 480 0 720 40 S 1200 80 1440 30 L1440 90 L0 90Z"/>
+      <path class="wave w2" d="M0 60 C 300 20 540 90 780 55 S 1220 20 1440 60 L1440 90 L0 90Z"/>
+    </svg>
+  </header>
+
+  <main class="content">
+    <!-- Step 1 -->
+    <section class="card reveal" style="--d:.15s" data-card="1" aria-labelledby="step1-title">
+      <div class="card-head">
+        <span class="step"><b>1</b><svg class="ico"><use href="#i-check"/></svg></span>
+        <div>
+          <h2 id="step1-title">เลือกไฟล์ PowerPoint</h2>
+          <p class="muted">ต้องเลือก Input file ก่อน จึงจะเลือกระดับความชัดได้</p>
+        </div>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <svg class="dz-border" aria-hidden="true"><rect x="1" y="1" rx="17" ry="17"/></svg>
+        <div class="dz-visual" aria-hidden="true">
+          <div class="dz-upload">
+            <svg viewBox="0 0 24 24" class="ico-lg">
+              <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+              <g class="dz-arrow"><path d="M12 13v8"/><path d="m8 17 4-4 4 4"/></g>
+            </svg>
+          </div>
+          <div class="dz-file"><span>P</span><em>PPTX</em></div>
+        </div>
+        <div class="file-text">
+          <strong id="fileName">ยังไม่ได้เลือกไฟล์</strong>
+          <span id="fileMeta" class="muted small">รองรับไฟล์ .pptx</span>
+          <span class="dz-hint small">ลากไฟล์ .pptx มาวางตรงนี้ได้เลย</span>
+        </div>
+        <button type="button" class="btn btn-secondary btn-pick" id="pickButton"><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg>เลือกไฟล์</button>
+        <input type="file" id="fileInput" accept=".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation" hidden tabindex="-1">
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="card reveal" style="--d:.25s" data-card="2" aria-labelledby="step2-title">
+      <div class="card-head">
+        <span class="step"><b>2</b><svg class="ico"><use href="#i-check"/></svg></span>
+        <div>
+          <h2 id="step2-title">เลือกระดับความชัด</h2>
+          <p class="muted" id="qualityHint">การ์ดจะเปิดใช้งานหลังเลือกไฟล์ และแสดงขนาดปลายทางของแต่ละระดับ</p>
+        </div>
+      </div>
+
+      <div class="quality-grid" id="qualityGrid" role="radiogroup" aria-labelledby="step2-title">
+        <!-- cards are rendered by app.js -->
+        <div class="helper-tile" id="helperTile">
+          <span class="helper-icon"><svg class="ico"><use href="#i-bulb"/></svg></span>
+          <strong>ตัวเลขขนาดไฟล์</strong>
+          <p class="muted small">ระบบสร้างไฟล์จำลองจริงทุกระดับหลังเลือกไฟล์ จึงเปรียบเทียบขนาดได้แม่นยำก่อนดาวน์โหลด</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="card reveal" style="--d:.35s" data-card="3" aria-labelledby="step3-title">
+      <div class="card-head">
+        <span class="step"><b>3</b><svg class="ico"><use href="#i-check"/></svg></span>
+        <div>
+          <h2 id="step3-title">ตรวจสอบผลลัพธ์และดาวน์โหลด</h2>
+          <p class="muted" id="qualitySummary">ยังไม่ได้เลือกระดับความชัด</p>
+        </div>
+      </div>
+
+      <div class="output-box">
+        <span class="ob-icon"><svg class="ico"><use href="#i-file-down"/></svg></span>
+        <div class="ob-text">
+          <span class="label">ชื่อไฟล์ Output (ดาวน์โหลด)</span>
+          <span id="outputName">เลือกไฟล์เพื่อแสดงชื่อไฟล์ Output</span>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <span class="stat-icon"><svg class="ico"><use href="#i-file"/></svg></span>
+          <div class="stat-text">
+            <span class="label">ขนาดไฟล์เดิม</span>
+            <span class="value" id="originalSize">—</span>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-icon primary"><svg class="ico"><use href="#i-package"/></svg></span>
+          <div class="stat-text">
+            <span class="label">ขนาดหลังแปลง</span>
+            <span class="value primary" id="estimatedSize">—</span>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <span class="ring" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <defs>
+                <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#10B981"/><stop offset="1" stop-color="#06B6D4"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-track" cx="32" cy="32" r="26"/>
+              <circle class="ring-fill" id="ringFill" cx="32" cy="32" r="26"/>
+            </svg>
+            <svg class="ico ring-ico"><use href="#i-trend-down"/></svg>
+          </span>
+          <div class="stat-text">
+            <span class="label">คาดว่าลดลง</span>
+            <span class="value success" id="reduction">—</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="details small" id="details" hidden></p>
+
+      <div class="warning">
+        <svg class="ico swing"><use href="#i-alert"/></svg>
+        <div><strong>ข้อควรทราบ</strong>
+        <span>ระบบบีบอัดเฉพาะภาพ JPEG; PNG/ภาพโปร่งใส, Excel/OLE และโครงสร้างสไลด์จะคงเดิม เพื่อลดโอกาสไฟล์ต้อง Repair หรือข้อมูลหาย</span></div>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="card action-card reveal" style="--d:.45s">
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+        <div class="progress-bar" id="progressBar"><span class="progress-glow"></span></div>
+      </div>
+      <div class="footer-row">
+        <div class="status-wrap" id="statusWrap" data-state="idle">
+          <span class="status-icon" aria-hidden="true">
+            <span class="st-idle"></span>
+            <span class="st-spin"></span>
+            <svg class="st-done ico"><use href="#i-check"/></svg>
+            <svg class="st-error ico"><use href="#i-alert"/></svg>
+          </span>
+          <span class="status muted small" id="status" aria-live="polite">เริ่มต้นโดยเลือกไฟล์ PowerPoint</span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-secondary btn-reset" id="resetButton" disabled><svg class="ico"><use href="#i-rotate"/></svg>ล้างไฟล์</button>
+          <button type="button" class="btn btn-primary btn-download" id="downloadButton" disabled><svg class="ico"><use href="#i-download"/></svg>ดาวน์โหลดไฟล์ _Resize</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="credit" aria-label="ผู้พัฒนาและสถิติการใช้งาน">
+    <div class="credit-inner">
+      <span class="credit-text"><svg class="ico"><use href="#i-code"/></svg>Programming by Duongruthai_Milk</span>
+      <span class="usage-stats" id="usageStats" aria-live="polite" title="เวอร์ชันทดลอง: นับเฉพาะในเบราว์เซอร์นี้ ไม่ส่งข้อมูลออกจากเครื่อง">
+        <span class="usage-stat">เปิดเว็บ <strong id="visitCount">—</strong> ครั้ง</span>
+        <span class="usage-separator" aria-hidden="true">•</span>
+        <span class="usage-stat">ดาวน์โหลด <strong id="downloadCount">—</strong> ครั้ง</span>
+      </span>
+    </div>
+  </footer>
+
+  <dialog id="messageDialog" class="dialog">
+    <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+    <form method="dialog" class="dialog-card">
+      <div class="dialog-icon" aria-hidden="true">
+        <svg class="di-success" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+        <svg class="di-error" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M18 18l16 16M34 18 18 34"/></svg>
+      </div>
+      <h3 id="dialogTitle"></h3>
+      <div id="dialogBody"></div>
+      <div class="dialog-actions">
+        <button class="btn btn-primary" value="ok" autofocus>ตกลง</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="config.js?v=1"></script>
+  <script src="js/trial.js?v=1"></script>
+  <script src="lib/jszip.min.js"></script>
+  <script src="js/resizer.js?v=6"></script>
+  <script src="js/app.js?v=6"></script>
+</body>
+</html>
