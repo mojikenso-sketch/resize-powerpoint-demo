@@ -6,7 +6,7 @@ window.DEMO_PRICE = 'สิทธิ์ใช้งานรายปี 990 บ
    gateUrl = URL ของ Web App "Trial Gate" (Google Apps Script) ที่ลงท้ายด้วย /exec
    ถ้ายังเป็น PASTE_... ระบบจะไม่จำกัดเวลา (เปิดใช้ได้ตามปกติ) */
 window.DEMO_TRIAL = {
-  gateUrl: 'PASTE_TRIAL_GATE_URL_HERE',
+  gateUrl: 'https://script.google.com/macros/s/AKfycbwQzhsI1OIN-YUumWLE0n1150c9hTPC--Npm19k44AIDjneJfn2SFXnTYxsW9OGbO0/exec',
   app: 'resize-ppt',
   hours: 5,
   contact: window.DEMO_CONTACT,
