@@ -1,139 +1,84 @@
-/* ระบบทดลองใช้ฟรี 3 วัน (ต่อเบราว์เซอร์) — เก็บเวลาเริ่มทดลองไว้ใน localStorage เท่านั้น
-   ไม่มีการส่งข้อมูลหรือไฟล์ใดๆ ออกจากเครื่อง */
+/* ข้อจำกัดเวอร์ชันทดลอง (DEMO) + แถบแจ้งด้านบน
+   - เวลาทดลอง 5 ชั่วโมง (นับตาม IP + อุปกรณ์) จัดการโดย js/trial-gate.js → window.DemoTrial
+   - ไฟล์นี้: ระดับความชัดที่เปิดให้ลอง, ขนาดไฟล์สูงสุด, แถบแจ้ง และกล่องแจ้ง 🔒 */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
-  else root.DemoTrialCore = api;
+  else root.DemoLimits = api;
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  const KEY_START = 'demo_rpp_trial_start';
-  const HOUR = 3600 * 1000;
-  const DAY = 24 * HOUR;
+  /** ระดับที่ใช้ได้ในเวอร์ชันทดลอง — ระดับอื่นแสดงไว้แต่ล็อก 🔒 */
+  const ALLOWED_KEYS = Object.freeze(['balanced', 'smallest']);
+  const MAX_FILE_MB = 30;
+  const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
 
-  /**
-   * คืนสถานะทดลองใช้: { allowed, expired, remainingMs, days, hours, storage }
-   * storage = false เมื่อใช้ localStorage ไม่ได้ (อนุญาตให้ใช้งานได้ตามปกติ)
-   */
-  function getStatus(storage, now, trialDays) {
-    const total = (trialDays || 3) * DAY;
-    let start;
-    try {
-      const raw = storage.getItem(KEY_START);
-      start = raw === null ? NaN : Number(raw);
-      // ไม่มีค่า / ค่าเสีย / ค่าอยู่ในอนาคต → เริ่มนับใหม่จากตอนนี้
-      if (!Number.isFinite(start) || start <= 0 || start > now) {
-        start = now;
-        storage.setItem(KEY_START, String(start));
-      }
-    } catch (_error) {
-      return { allowed: true, expired: false, remainingMs: total, days: 0, hours: 0, storage: false };
-    }
-    const remainingMs = Math.max(0, start + total - now);
-    const expired = remainingMs <= 0;
-    return {
-      allowed: !expired,
-      expired,
-      remainingMs,
-      days: Math.floor(remainingMs / DAY),
-      hours: Math.floor((remainingMs % DAY) / HOUR),
-      storage: true,
-    };
+  function isLocked(key) {
+    return ALLOWED_KEYS.indexOf(key) === -1;
   }
 
-  function getStorage() {
-    try {
-      return window.localStorage;
-    } catch (_error) {
-      return null;
-    }
+  /** true เมื่อไฟล์ใหญ่เกินที่เวอร์ชันทดลองรองรับ */
+  function isTooLarge(file) {
+    return Boolean(file) && Number(file.size) > MAX_FILE_BYTES;
   }
 
-  return { KEY_START, DAY, HOUR, getStatus, getStorage };
+  /** true เมื่อหมดเวลาทดลอง (trial-gate.js แสดงหน้าจอเต็มให้แล้ว — ผู้เรียกแค่หยุดการทำงาน) */
+  function trialExpired(win) {
+    const gate = win && win.DemoTrial;
+    return Boolean(gate && typeof gate.isExpired === 'function' && gate.isExpired());
+  }
+
+  function lockedMessage(contact) {
+    return `🔒 ระดับนี้มีในเวอร์ชันเต็ม — ${contact || ''}`.trim();
+  }
+
+  function tooLargeMessage() {
+    return `เวอร์ชันทดลองรองรับไฟล์ไม่เกิน ${MAX_FILE_MB} MB ต่อไฟล์\nเวอร์ชันเต็มไม่จำกัดขนาดไฟล์`;
+  }
+
+  return { ALLOWED_KEYS, MAX_FILE_MB, MAX_FILE_BYTES, isLocked, isTooLarge, trialExpired, lockedMessage, tooLargeMessage };
 });
 
 (function () {
   'use strict';
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
-  const core = window.DemoTrialCore;
-  const days = Number(window.DEMO_TRIAL_DAYS) || 3;
-  const contact = window.DEMO_CONTACT || '';
-  const price = window.DEMO_PRICE || '';
-  const nullStorage = { getItem() { throw new Error('no storage'); }, setItem() { throw new Error('no storage'); } };
+  const D = window.DemoLimits;
+  const cfg = window.DEMO_TRIAL || {};
+  const hours = Number(cfg.hours) || 5;
+  const contact = cfg.contact || window.DEMO_CONTACT || '';
+  let toast;
+  let toastTimer;
 
-  function status() {
-    return core.getStatus(core.getStorage() || nullStorage, Date.now(), days);
-  }
-
-  let banner;
-  let modal;
+  /** กล่องแจ้งเล็กๆ เมื่อกดระดับที่ล็อก */
+  D.showLocked = function showLocked() {
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'demo-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = D.lockedMessage(contact);
+    toast.classList.add('is-show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('is-show'), 4000);
+  };
 
   function renderBanner() {
-    const s = status();
-    if (!banner) {
-      banner = document.createElement('div');
-      banner.className = 'demo-banner';
-      banner.setAttribute('role', 'note');
-      document.body.insertBefore(banner, document.body.firstChild);
-    }
-    const left = s.expired
-      ? `🧪 เวอร์ชันทดลองใช้ฟรี ${days} วัน · หมดระยะทดลองแล้ว`
-      : `🧪 เวอร์ชันทดลองใช้ฟรี ${days} วัน · เหลืออีก ${s.days} วัน ${s.hours} ชม.`;
-    banner.classList.toggle('is-expired', s.expired);
-    banner.innerHTML = '';
+    const banner = document.createElement('div');
+    banner.className = 'demo-banner';
+    banner.setAttribute('role', 'note');
     const a = document.createElement('span');
     a.className = 'demo-banner-main';
-    a.textContent = left;
+    a.textContent = `🧪 เวอร์ชันทดลองใช้ฟรี ${hours} ชั่วโมง (1 ครั้งต่อคน)`;
     const b = document.createElement('span');
     b.className = 'demo-banner-contact';
     b.textContent = contact;
     banner.append(a, b);
+    document.body.insertBefore(banner, document.body.firstChild);
   }
 
-  function showExpired() {
-    if (!modal) {
-      modal = document.createElement('dialog');
-      modal.className = 'dialog demo-expired';
-      modal.innerHTML =
-        '<form method="dialog" class="dialog-card">' +
-        '<div class="demo-expired-icon" aria-hidden="true">⏰</div>' +
-        '<h3></h3><p class="demo-expired-body"></p>' +
-        '<div class="demo-price"></div><p class="demo-contact"></p>' +
-        '<div class="dialog-actions"><button class="btn btn-primary" value="ok">ตกลง</button></div>' +
-        '</form>';
-      modal.querySelector('h3').textContent = `หมดระยะทดลองใช้ ${days} วันแล้ว`;
-      modal.querySelector('.demo-expired-body').textContent =
-        'ขอบคุณที่ทดลองใช้งานโปรแกรมย่อไฟล์ PowerPoint หากต้องการใช้งานต่อ สามารถซื้อสิทธิ์ใช้งานได้ตามรายละเอียดด้านล่าง';
-      modal.querySelector('.demo-price').textContent = price;
-      modal.querySelector('.demo-contact').textContent = contact;
-      modal.addEventListener('click', (event) => {
-        if (event.target === modal) modal.close();
-      });
-      document.body.appendChild(modal);
-    }
-    if (typeof modal.showModal === 'function') {
-      if (!modal.open) modal.showModal();
-    } else {
-      window.alert(`หมดระยะทดลองใช้ ${days} วันแล้ว\n\n${price}\n${contact}`);
-    }
-  }
-
-  /** เรียกก่อนบีบอัด/ดาวน์โหลด — คืน false (และแสดงหน้าต่างแจ้ง) เมื่อหมดระยะทดลอง */
-  function allow() {
-    const s = status();
-    renderBanner();
-    if (s.allowed) return true;
-    showExpired();
-    return false;
-  }
-
-  window.DemoTrial = { allow, status };
-
-  function init() {
-    renderBanner();
-    setInterval(renderBanner, 60 * 1000);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderBanner);
+  else renderBanner();
 })();

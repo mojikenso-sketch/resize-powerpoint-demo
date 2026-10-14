@@ -2,8 +2,10 @@
   'use strict';
 
   const R = window.PptxResizer;
+  // DEMO: ข้อจำกัดเวอร์ชันทดลอง (js/trial.js) — ถ้าไม่มีไฟล์นั้น ใช้งานได้เต็มตามปกติ
+  const D = window.DemoLimits || { isLocked: () => false, isTooLarge: () => false, trialExpired: () => false };
   // ต้องตรงกับ version.txt บนเซิร์ฟเวอร์ — ถ้าไม่ตรง แปลว่าแท็บนี้ยังเป็นโค้ดเก่า
-  const BUILD = '6';
+  const BUILD = '7';
   // เวอร์ชัน DEMO (GitHub Pages): ไม่มี usage.php — นับสถิติเฉพาะในเบราว์เซอร์นี้ด้วย localStorage
   const USAGE_STORAGE_KEY = 'demo_rpp_usage';
   const VISIT_SESSION_KEY = 'resize-powerpoint-visit-counted-v1';
@@ -213,7 +215,19 @@
       card.querySelector('.q-spec').textContent = R.specification(preset);
       card.querySelector('.q-use').textContent = preset.useCase;
       card.title = preset.description;
-      card.addEventListener('click', () => selectPreset(preset.key));
+      if (D.isLocked(preset.key)) {
+        // DEMO: แสดงการ์ดไว้ให้เห็น แต่กดแล้วแจ้งว่ามีในเวอร์ชันเต็ม
+        card.classList.add('is-locked');
+        card.setAttribute('aria-disabled', 'true');
+        card.title = `🔒 มีในเวอร์ชันเต็ม — ${preset.description}`;
+        const lock = document.createElement('span');
+        lock.className = 'q-lock';
+        lock.textContent = '🔒 เวอร์ชันเต็ม';
+        card.querySelector('.q-title').appendChild(lock);
+        card.addEventListener('click', () => showLocked());
+      } else {
+        card.addEventListener('click', () => selectPreset(preset.key));
+      }
       card.addEventListener('keydown', onCardKeydown);
       els.qualityGrid.insertBefore(card, els.helperTile);
       cards[preset.key] = card;
@@ -221,7 +235,7 @@
   }
 
   function onCardKeydown(event) {
-    const keys = R.QUALITY_PRESETS.map((p) => p.key);
+    const keys = R.QUALITY_PRESETS.map((p) => p.key).filter((k) => !D.isLocked(k));
     const index = keys.indexOf(event.currentTarget.dataset.key);
     let next = null;
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = keys[(index + 1) % keys.length];
@@ -266,7 +280,8 @@
   }
 
   function setCardsEnabled(enabled) {
-    for (const card of Object.values(cards)) card.disabled = !enabled;
+    // การ์ดที่ล็อกกดได้เสมอ เพื่อแสดงกล่องแจ้ง 🔒
+    for (const [key, card] of Object.entries(cards)) card.disabled = !enabled && !D.isLocked(key);
   }
 
   function refreshSelection() {
@@ -404,6 +419,11 @@
     }
   }
 
+  function showLocked() {
+    if (typeof D.showLocked === 'function') D.showLocked();
+    else showDialog('เวอร์ชันเต็ม', D.lockedMessage ? D.lockedMessage(window.DEMO_CONTACT) : '🔒 ระดับนี้มีในเวอร์ชันเต็ม', 'info');
+  }
+
   // ---------------------------------------------------------------------------
   // Effects
   // ---------------------------------------------------------------------------
@@ -496,7 +516,7 @@
   // ---------------------------------------------------------------------------
 
   function selectPreset(key) {
-    if (!state.file || !cards[key] || cards[key].disabled) return;
+    if (!state.file || !cards[key] || cards[key].disabled || D.isLocked(key)) return;
     if (state.selectedKey !== key) state.downloaded = false;
     state.selectedKey = key;
     refreshSelection();
@@ -518,7 +538,7 @@
     els.dropZone.classList.remove('has-file');
     els.fileName.textContent = 'ยังไม่ได้เลือกไฟล์';
     els.fileName.removeAttribute('title');
-    els.fileMeta.textContent = 'รองรับไฟล์ .pptx';
+    els.fileMeta.textContent = 'รองรับไฟล์ .pptx (เวอร์ชันทดลองไม่เกิน 30 MB)';
     els.outputName.textContent = 'เลือกไฟล์เพื่อแสดงชื่อไฟล์ Output';
     setText(els.originalSize, '—');
     els.qualityHint.textContent = 'การ์ดจะเปิดใช้งานหลังเลือกไฟล์ และแสดงขนาดปลายทางของแต่ละระดับ';
@@ -558,7 +578,7 @@
 
   async function handleFile(file) {
     if (!file) return;
-    if (window.DemoTrial && !window.DemoTrial.allow()) return; // DEMO: หมดระยะทดลอง
+    if (D.trialExpired(window)) return; // DEMO: หมดเวลาทดลอง — trial-gate.js แสดงหน้าจอแจ้งแล้ว
 
     if (await isOutdated()) {
       promptReload();
@@ -571,6 +591,11 @@
     }
     if (file.size === 0) {
       showDialog('ไม่สามารถใช้ไฟล์นี้ได้', 'ไฟล์ว่างเปล่า (0 ไบต์)', 'error');
+      return;
+    }
+    if (D.isTooLarge(file)) {
+      // DEMO: จำกัดขนาดไฟล์ — เวอร์ชันเต็มไม่จำกัด
+      showDialog('ไฟล์ใหญ่เกินเวอร์ชันทดลอง', `ไฟล์นี้ขนาด ${R.formatBytes(file.size)}\n${D.tooLargeMessage()}`, 'info');
       return;
     }
 
@@ -694,7 +719,11 @@
   }
 
   function download() {
-    if (window.DemoTrial && !window.DemoTrial.allow()) return; // DEMO: หมดระยะทดลอง
+    if (D.trialExpired(window)) return; // DEMO: หมดเวลาทดลอง — trial-gate.js แสดงหน้าจอแจ้งแล้ว
+    if (state.selectedKey && D.isLocked(state.selectedKey)) {
+      showLocked();
+      return;
+    }
     const result = state.results[state.selectedKey];
     if (!state.file || !result) {
       showDialog('ยังคำนวณไม่เสร็จ', 'กรุณารอให้ระบบคำนวณขนาดของระดับที่เลือกเสร็จก่อน', 'error');

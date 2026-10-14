@@ -1,4 +1,5 @@
-/* แถบแจ้งเวอร์ชันทดลอง + หน้าต่างหมดระยะทดลอง (DEMO) */
+/* แถบแจ้งเวอร์ชันทดลอง + ระดับที่ล็อก + กล่องแจ้ง 🔒 (DEMO)
+   หน้าจอ "หมดเวลาทดลอง" และป้ายนับเวลาถอยหลังมาจาก js/trial-gate.js */
 .demo-banner {
   position: relative;
   z-index: 50;
@@ -15,17 +16,39 @@
   border-bottom: 1px solid #F59E0B55;
 }
 .demo-banner-main { font-weight: 600; }
-.demo-banner.is-expired { background: linear-gradient(90deg, #FEE2E2, #FECACA); color: #7F1D1D; }
-.demo-expired .dialog-card { text-align: center; }
-.demo-expired-icon { font-size: 52px; line-height: 1; margin-bottom: 10px; }
-.demo-expired h3 { color: var(--amber); }
-.demo-expired-body { font-size: 14.5px; color: var(--ink-2); margin: 0 0 14px; }
-.demo-price {
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: #EEF2FF;
-  color: var(--primary-dark);
+
+.quality-card.is-locked { cursor: not-allowed; opacity: .62; filter: grayscale(.55); }
+.quality-card.is-locked:hover { opacity: .8; }
+.q-lock {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #E2E8F0;
+  color: #475569;
+  font-size: 11.5px;
   font-weight: 600;
-  font-size: 14.5px;
+  white-space: nowrap;
 }
-.demo-contact { margin: 12px 0 0; font-size: 14px; color: var(--ink-2); overflow-wrap: anywhere; }
+
+.demo-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 2147482000;
+  max-width: calc(100vw - 32px);
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(17, 24, 39, .94);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  overflow-wrap: anywhere;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.demo-toast.is-show { opacity: 1; transform: translate(-50%, 0); }
